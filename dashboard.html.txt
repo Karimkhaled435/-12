@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - منصة سيد خلف التعليمية</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="images/logo.png" alt="منصة سيد خلف التعليمية">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="dashboard.html">الرئيسية</a></li>
+                    <li><a href="videos.html">الفيديوهات</a></li>
+                    <li><a href="assignments.html">الواجبات</a></li>
+                    <li><a href="cart.html">عربة التسوق <span id="cartCount">0</span></a></li>
+                </ul>
+            </nav>
+            <div class="user-profile">
+                <img src="images/user.png" alt="صورة المستخدم">
+                <span>مرحباً، محمد</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="welcome-section">
+            <h1>مرحباً بك في منصة سيد خلف التعليمية</h1>
+            <p>ابدأ رحلتك التعليمية مع أفضل الدروس والمواد التعليمية</p>
+        </section>
+
+        <section class="quick-links">
+            <div class="card" onclick="location.href='videos.html'">
+                <h3>الفيديوهات التعليمية</h3>
+                <p>استعرض مكتبة الفيديوهات التعليمية</p>
+            </div>
+            <div class="card" onclick="location.href='assignments.html'">
+                <h3>الواجبات والتمارين</h3>
+                <p>اطلع على الواجبات وحلول التمارين</p>
+            </div>
+            <div class="card" onclick="location.href='cart.html'">
+                <h3>عربة التسوق</h3>
+                <p>أكمل عملية الشراء للوصول للمحتوى</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2023 منصة سيد خلف التعليمية. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
