@@ -1,0 +1,174 @@
+// متغيرات التطبيق
+let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+
+// وظيفة تسجيل الدخول
+document.getElementById('loginForm')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    
+    // هنا يمكنك إضافة التحقق من بيانات الدخول
+    // لأغراض العرض، سنقوم بتوجيه المستخدم مباشرة
+    window.location.href = 'dashboard.html';
+});
+
+// وظيفة إضافة عنصر إلى العربة
+function addToCart(videoId) {
+    const videoCard = document.querySelector(`.video-card[data-id="${videoId}"]`);
+    const videoTitle = videoCard.querySelector('h3').textContent;
+    const videoPrice = parseFloat(videoCard.getAttribute('data-price'));
+    const videoThumbnail = videoCard.querySelector('img').src;
+    
+    // التحقق من عدم وجود العنصر في العربة بالفعل
+    const existingItem = cartItems.find(item => item.id === videoId);
+    if (existingItem) {
+        alert('هذا الفيديو موجود بالفعل في العربة');
+        return;
+    }
+    
+    // إضافة العنصر إلى العربة
+    cartItems.push({
+        id: videoId,
+        title: videoTitle,
+        price: videoPrice,
+        thumbnail: videoThumbnail
+    });
+    
+    // حفظ العربة في localStorage
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+    
+    // تحديث عدد العناصر في العربة
+    updateCartCount();
+    
+    alert('تم إضافة الفيديو إلى العربة');
+}
+
+// وظيفة تحديث عدد العناصر في العربة
+function updateCartCount() {
+    const cartCountElements = document.querySelectorAll('#cartCount');
+    cartCountElements.forEach(element => {
+        element.textContent = cartItems.length;
+    });
+}
+
+// وظيفة عرض محتويات العربة
+function displayCartItems() {
+    const cartContainer = document.querySelector('.cart-items');
+    const cartSummary = document.querySelector('.cart-summary');
+    
+    if (!cartContainer) return;
+    
+    if (cartItems.length === 0) {
+        cartContainer.innerHTML = '<p>العربة فارغة</p>';
+        cartSummary.innerHTML = '<p>الإجمالي: 0 ج.م</p>';
+        return;
+    }
+    
+    let cartHTML = '';
+    let total = 0;
+    
+    cartItems.forEach((item, index) => {
+        total += item.price;
+        cartHTML += `
+            <div class="cart-item">
+                <div class="cart-item-info">
+                    <img src="${item.thumbnail}" alt="${item.title}">
+                    <div>
+                        <h4>${item.title}</h4>
+                        <p>${item.price} ج.م</p>
+                    </div>
+                </div>
+                <span class="remove-item" onclick="removeFromCart(${index})">×</span>
+            </div>
+        `;
+    });
+    
+    cartContainer.innerHTML = cartHTML;
+    cartSummary.innerHTML = `
+        <h3>ملخص الطلب</h3>
+        <p>الإجمالي: ${total} ج.م</p>
+        <button class="checkout-btn" onclick="checkout()">إتمام الشراء</button>
+    `;
+}
+
+// وظيفة إزالة عنصر من العربة
+function removeFromCart(index) {
+    cartItems.splice(index, 1);
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+    updateCartCount();
+    displayCartItems();
+}
+
+// وظيفة إتمام الشراء
+function checkout() {
+    // هنا يمكنك إضافة عملية الدفع
+    // لأغراض العرض، سنقوم بحفظ الفيديوهات المشتراة فقط
+    const purchasedVideos = JSON.parse(localStorage.getItem('purchasedVideos')) || [];
+    cartItems.forEach(item => {
+        purchasedVideos.push(item.id);
+    });
+    
+    localStorage.setItem('purchasedVideos', JSON.stringify([...new Set(purchasedVideos)]));
+    localStorage.removeItem('cart');
+    cartItems = [];
+    updateCartCount();
+    
+    alert('تمت عملية الشراء بنجاح! يمكنك الآن مشاهدة الفيديوهات المشتراة.');
+    window.location.href = 'videos.html';
+}
+
+// وظيفة التحقق من الفيديوهات المشتراة
+function checkPurchasedVideos() {
+    const purchasedVideos = JSON.parse(localStorage.getItem('purchasedVideos')) || [];
+    const videoCards = document.querySelectorAll('.video-card');
+    
+    videoCards.forEach(card => {
+        const videoId = parseInt(card.getAttribute('data-id'));
+        if (purchasedVideos.includes(videoId)) {
+            const addButton = card.querySelector('.add-to-cart');
+            addButton.textContent = 'مشاهدة';
+            addButton.style.backgroundColor = '#3498db';
+            addButton.onclick = function() {
+                // توجيه المستخدم لمشاهدة الفيديو
+                alert('سيتم توجيهك لمشاهدة الفيديو...');
+            };
+        }
+    });
+}
+
+// تهيئة التطبيق عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+    updateCartCount();
+    displayCartItems();
+    checkPurchasedVideos();
+    
+    // البحث عن الفيديوهات
+    document.getElementById('videoSearch')?.addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        const videoCards = document.querySelectorAll('.video-card');
+        
+        videoCards.forEach(card => {
+            const title = card.querySelector('h3').textContent.toLowerCase();
+            if (title.includes(searchTerm)) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+    
+    // تصفية الفيديوهات حسب التصنيف
+    document.getElementById('videoCategory')?.addEventListener('change', function(e) {
+        const category = e.target.value;
+        const videoCards = document.querySelectorAll('.video-card');
+        
+        videoCards.forEach(card => {
+            const cardCategory = card.getAttribute('data-category');
+            if (category === 'all' || cardCategory === category) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+});
