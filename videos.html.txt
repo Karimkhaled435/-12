@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <!-- نفس الهيدر من dashboard.html -->
+</head>
+<body>
+    <!-- نفس الهيدر من dashboard.html -->
+
+    <main class="container">
+        <h1>الفيديوهات التعليمية</h1>
+        
+        <div class="filter-section">
+            <input type="text" placeholder="ابحث عن فيديو..." id="videoSearch">
+            <select id="videoCategory">
+                <option value="all">جميع التصنيفات</option>
+                <option value="math">الرياضيات</option>
+                <option value="science">العلوم</option>
+                <option value="arabic">اللغة العربية</option>
+            </select>
+        </div>
+
+        <div class="videos-grid">
+            <!-- فيديو 1 -->
+            <div class="video-card" data-category="math" data-price="50">
+                <div class="video-thumbnail">
+                    <img src="images/math-video1.jpg" alt="فيديو رياضيات">
+                    <button class="preview-btn">معاينة</button>
+                </div>
+                <div class="video-info">
+                    <h3>الدرس الأول: الجبر الأساسي</h3>
+                    <p>مدة الفيديو: 25 دقيقة</p>
+                    <div class="video-actions">
+                        <span class="price">50 ج.م</span>
+                        <button class="add-to-cart" onclick="addToCart(1)">إضافة إلى العربة</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- فيديو 2 -->
+            <div class="video-card" data-category="science" data-price="40">
+                <div class="video-thumbnail">
+                    <img src="images/science-video1.jpg" alt="فيديو علوم">
+                    <button class="preview-btn">معاينة</button>
+                </div>
+                <div class="video-info">
+                    <h3>تجارب كيميائية مبسطة</h3>
+                    <p>مدة الفيديو: 18 دقيقة</p>
+                    <div class="video-actions">
+                        <span class="price">40 ج.م</span>
+                        <button class="add-to-cart" onclick="addToCart(2)">إضافة إلى العربة</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- يمكن إضافة المزيد من الفيديوهات -->
+        </div>
+    </main>
+
+    <!-- نفس الفوتر من dashboard.html -->
+
+    <script src="js/main.js"></script>
+</body>
+</html>
